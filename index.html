@@ -36,7 +36,26 @@
   // Thêm 1 marker (ví dụ tại Hà Nội)
   var marker = L.marker([21.046607705227256, 105.84016820998656]).addTo(map);
   marker.bindPopup("<b>Hà Nội</b><br>Nhà thầy Tùng").openPopup();
+
+  // Load file GeoJSON
+fetch('SVD.geojson')
+  .then(res => res.json())
+  .then(data => {
+    var geoLayer = L.geoJSON(data, {
+      style: style,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+
+    map.fitBounds(geoLayer.getBounds());
+  });
+
+
+
+
+  
 </script>
+
+
 
 </body>
 </html>
