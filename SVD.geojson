@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "SVD",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 105.795212186818361, 20.989709685707545 ], [ 105.795679384964785, 20.990040542647023 ], [ 105.796243506076237, 20.989317188974649 ], [ 105.795770837113238, 20.988999368427077 ], [ 105.795212186818361, 20.989709685707545 ] ] ] ] } }
+]
+}
