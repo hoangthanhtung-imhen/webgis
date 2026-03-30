@@ -1,38 +1,72 @@
-<script>
-  var map = L.map('map').setView([14.0583, 108.2772], 6);
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebGIS - SVD</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<h3 style="text-align:center;">Bản đồ Sân vận động</h3>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Khởi tạo bản đồ
+  var map = L.map('map').setView([16, 108], 6);
+
+  // Nền OpenStreetMap
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  var marker = L.marker([21.0466, 105.8401]).addTo(map);
-  marker.bindPopup("<b>Hà Nội</b><br>Nhà thầy Tùng").openPopup();
-
-  // ✅ style mặc định
+  // Hàm style
   function style(feature) {
     return {
-      color: "blue",
+      color: "red",
       weight: 2,
-      fillOpacity: 0.3
+      fillOpacity: 0.5
     };
   }
 
-  // ✅ popup cho từng feature
+  // Popup cho từng đối tượng
   function onEachFeature(feature, layer) {
     if (feature.properties) {
-      layer.bindPopup(JSON.stringify(feature.properties));
+      let content = "";
+      for (let key in feature.properties) {
+        content += "<b>" + key + ":</b> " + feature.properties[key] + "<br>";
+      }
+      layer.bindPopup(content);
     }
   }
 
-  // ✅ load GeoJSON
-  fetch('SVD.geojson')
-    .then(res => res.json())
+  // Load GeoJSON từ GitHub (RAW)
+  fetch('https://raw.githubusercontent.com/hoangthanhtung-imhen/webgis/main/SVD.geojson')
+    .then(response => response.json())
     .then(data => {
-      L.geoJSON(data, {
+      var geoLayer = L.geoJSON(data, {
         style: style,
         onEachFeature: onEachFeature
       }).addTo(map);
+
+      // Zoom tới dữ liệu
+      map.fitBounds(geoLayer.getBounds());
     })
-    .catch(err => console.error(err));
+    .catch(error => console.error("Lỗi load GeoJSON:", error));
+
 </script>
+
+</body>
+</html>
